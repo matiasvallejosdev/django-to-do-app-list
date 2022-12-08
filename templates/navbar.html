@@ -1,0 +1,22 @@
+<li class="aside__elem">
+    <a class="button button--fullwidth button--list" href="{% url 'tasks:home' %}">
+        <i class="fa-solid fa-inbox fa-sm"></i>
+        <span class="button__text button__text--small">Inbox</span>
+    </a>
+</li>
+{% for elem in list %}
+<li class="aside__elem">
+    <a class="button button--fullwidth button--list" href="{% url 'tasks:home'%}?list_by={{elem.name}}">
+        <i class="fa-solid fa-bars fa-sm"></i>
+        <span class="button__text button__text--small">{{elem.name}}</span>
+    </a>
+</li>
+{% endfor %}
+<li class="aside__elem aside__elem--divider">
+</li>
+<li class="aside__elem">
+    <a class="button button--fullwidth button--list" href="{% url 'tasks:list_create' %}">
+        <i class="fa-regular fa-square-plus fa-sm"></i>
+        <span class="button__text button__text--small">Create List</span>
+    </a>
+</li>

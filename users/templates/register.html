@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block root %}
+    <div class="login login--flex">
+        <div class="login__container login__container--big">
+            <div class="login__head">
+                <p class="login__subtitle">Register to</p>
+                <h5 class="login__title">Minimalistic</h5>
+            </div>
+            <form method="POST" class="form">
+                {% csrf_token %}
+                {{form.as_p}}
+                <input class="form__submit" type="submit" value="Register">
+                <p class="login__register">Already have an account? <a href="{% url 'users:login' %}">Login Now</a></p>
+            </form>
+
+        </div>
+    </div>
+
+{% endblock root %}

@@ -1,0 +1,5 @@
+<form class="form-task" action="" method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input class="form-task__submit" type="submit" value="Submit">
+</form>

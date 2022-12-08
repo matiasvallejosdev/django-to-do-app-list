@@ -1,0 +1,74 @@
+{% extends 'main.html' %}
+
+{% block main %}
+    <div class="header" style="display: flex; flex-direction: row; gap: 1rem;">
+        <h3 style="font-size: 32px; padding-left: .6rem">{{title}}</h3>
+        {% if title != 'Inbox' %}
+            <a class="task__icon" href="{% url 'tasks:list_delete' name=title%}">
+                <i class="fa-regular fa-trash-can"></i>
+            </a>
+        {% endif %}
+    </div>
+
+    {% comment %}
+<form action="" method="GET" id="search" name="search-tasks">
+    <input type="text" name="search-area" placeholder="Search Task" value="{{search_input}}">
+    <input type="submit" value="Search" id="search-submit">
+</form>
+{% endcomment %}
+
+    <div class="task">
+        {% for task in tasks_todo %}
+            <div class="task__elem" id="task-{{task.id}}">
+                <div class="task__group">
+                    <a class="task__icon" href="{% url 'tasks:complete' pk=task.id%}?list_by={{tasks_list_by}}&check=True">
+                        <i class="fa-regular fa-square "></i>
+                    </a>
+                    <p class="task__text">{{task.content}}</p>
+                </div>
+                <div class="task__group">
+                    <a class="task__icon" href="{% url 'tasks:delete' pk=task.id%}?list_by={{tasks_list_by}}">
+                        <i class="fa-regular fa-trash-can"></i>
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="task__elem">
+            {% if add_task == True %}
+                <a class="task__icon" href="{% url 'tasks:home'%}?list_by={{tasks_list_by}}">
+                    <i class="fa-solid fa-xmark"></i>
+                </a>
+                {% include 'form.html' %}
+            {% else %}
+                {% if title == 'Inbox' %}
+                    <a class="button button--fullwidth button--text" href="{% url 'tasks:home' %}?add_task=True">
+                {% else %}
+                    <a class="button button--fullwidth button--text" href="{% url 'tasks:home' %}?add_task=True&list_by={{tasks_list_by}}">
+                {% endif %}
+                <i class="fa-regular fa-plus"></i>
+                <span class="button__text button__text--medium">Add task</span>
+                </a>
+            {% endif %}
+        </div>
+        <div class="task__elem--nohover task__elem--separator task__elem">
+        </div>
+        <div class="task__elem--nohover task__elem">
+            <p class="task__text">Completed ({{tasks_complete_count}})</p>
+        </div>
+        {% for task in tasks_complete%}
+            <div class="task__elem">
+                <div class="task__group">
+                    <a class="task__icon" href="{% url 'tasks:complete' pk=task.id%}?list_by={{tasks_list_by}}&check=False">
+                        <i class="fa-solid fa-check"></i>
+                    </a>
+                    <p class="task__text task__text--striked">{{task.content}}</p>
+                </div>
+                <div class="task__group">
+                    <a class="task__icon" href="{% url 'tasks:delete' pk=task.id%}?list_by={{tasks_list_by}}">
+                        <i class="fa-regular fa-trash-can"></i>
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock main %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block root %}
+<main class="main">
+    <div class="main__elem" style="background-color: #f4f4f6;">
+        <div class="user">
+            <span class="user__username">{{user.username}}</span>
+            <div class="main__title">
+                <span class="user__name">{{user.first_name}} {{user.last_name}}</span>
+                <a class="user__logout" href="{% url 'users:logout' %}">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                </a>
+            </div>
+            <span class="user__email">{{user.email}}</span>
+        </div>
+        <ul class="aside__list">
+            {%include 'navbar.html'%}
+        </ul>
+    </div>
+    <div class="main__elem">
+        {% block main %}
+        {% endblock main %}
+    </div>
+</main>
+{% endblock root %}

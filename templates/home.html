@@ -1,0 +1,40 @@
+{%extends 'base.html'%}
+
+{% block root %}
+<div class="section">
+    <header class="container header" id="header">
+        <div class="nav">
+            <div href="#" class="nav__logo">
+                Minimalistic
+            </div>
+            <div class="nav__author">
+                <span class="nav__text">
+                    Made with by <a href="#" class="nav__link">Matias Vallejos</a> 
+                </span>
+            </div>
+        </div>
+    </header>
+</div>
+<div class="section section--all">
+    <div class="hero container">
+        <h1 class="hero__title">Simple, shareable todo lists.</h1>
+        <h4 class="hero__subtitle">The easiest way to keep track of the stuff you want to do.</h4>
+        <div class="hero__user">
+            {% if user.is_authenticated %}
+                <a class="button button--blue" href="{% url 'tasks:home' %}">
+                    <span class="button__text">Go to my tasks</span>
+                </a>
+                <a href="{% url 'users:logout' %}" class="button button--underline">
+                    <span class="button__text button__text--small">Sign out</span>
+                </a>
+            {%else%}
+                <a class="button button--blue" href="{%  url 'users:login' %}">
+                    <span class="button__text">Sign in now</span>
+                </a>
+                <p style="font-size: .8rem; font-style: italic; text-align: center; color: #888;">Please login to manage your tasks!</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock root %}
