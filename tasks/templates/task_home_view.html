@@ -9,14 +9,6 @@
             </a>
         {% endif %}
     </div>
-
-    {% comment %}
-<form action="" method="GET" id="search" name="search-tasks">
-    <input type="text" name="search-area" placeholder="Search Task" value="{{search_input}}">
-    <input type="submit" value="Search" id="search-submit">
-</form>
-{% endcomment %}
-
     <div class="task">
         {% for task in tasks_todo %}
             <div class="task__elem" id="task-{{task.id}}">

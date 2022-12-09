@@ -3,6 +3,13 @@
 {% block main %}
     <h3 style="font-size: 32px; padding-left: .6rem">Add List</h3>
     <div class="task">
-        {% include 'form.html' %}
+        <div class="task__elem">
+            <a class="task__icon" href="{% url 'tasks:home'%}?list_by={{tasks_list_by}}">
+                <i class="fa-solid fa-xmark"></i>
+            </a>
+            {% include 'form.html' %}
+        </div>
+        <div class="task__elem--nohover task__elem--separator task__elem">
+        </div>
     </div>
 {% endblock main %}
