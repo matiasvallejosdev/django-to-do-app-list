@@ -1,11 +1,14 @@
 {% extends 'base.html' %}
 
-{% block root %}
+{% block nowrap %}
     <div class="login login--flex">
         <div class="login__container login__container--big">
             <div class="login__head">
                 <p class="login__subtitle">Register to</p>
                 <h5 class="login__title">Minimalistic</h5>
+                <p class="login__subtitle">
+                    Beautifully simple, with all the basic features you expect. No bloat-ware here.
+                </p>
             </div>
             <form method="POST" class="form">
                 {% csrf_token %}
@@ -17,4 +20,4 @@
         </div>
     </div>
 
-{% endblock root %}
+{% endblock nowrap %}

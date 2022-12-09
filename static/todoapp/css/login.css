@@ -1,5 +1,4 @@
 .login{
-    width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -24,7 +23,6 @@
 }
 
 .login__head{
-    margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
@@ -32,6 +30,7 @@
     justify-content: center;
     text-align: center;
     gap: .25rem;
+    margin-bottom: 1.5rem;
 }
 
 .login__subtitle{
@@ -82,6 +81,7 @@
 .login__register a{
     text-decoration: none;
     transition: .2s ease all;
+    font-size: .85rem;
 }
 
 .login__register a:hover{
