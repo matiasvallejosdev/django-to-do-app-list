@@ -209,4 +209,12 @@ fabric.properties
 .idea/
 
 # Enviroment variables
+.env/
+.venv/
+env/
+venv/
 *.env
+
+*.pyc
+db.sqlite3
+staticfiles/
