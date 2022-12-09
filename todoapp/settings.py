@@ -14,15 +14,20 @@ from pathlib import Path
 import os
 import dj_database_url
 
-from dotenv import Dotenv
+import dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Load enviroment .env
-dotenv = Dotenv(os.path.join(os.path.dirname(__file__), ".env")) # Of course, replace by your correct path
-os.environ.update(dotenv)
+# dotenv = Dotenv(os.path.join(os.path.dirname(__file__), ".env")) # Of course, replace by your correct path
+# os.environ.update(dotenv)
 # load_dotenv(os.path.join(BASE_DIR, ".env"))
+
+# output of the following command should be: `['__author__', '__builtins__', '__cached__', ...`
+print("Dotenv should be shown here: ", dir(dotenv))
+dotenv_path = os.path.join(BASE_DIR, '.env')
+dotenv.load_dotenv(dotenv_path)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
