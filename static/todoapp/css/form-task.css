@@ -19,6 +19,16 @@
     gap: .5rem;
 }
 
+.form-task select{
+    height: auto;
+    margin: 0;
+    width: 100%;
+    outline: none;
+    border-radius: 0;
+    border: none;
+    background-color: inherit;
+}
+
 .form-task p > input{
     box-sizing: border-box;
     background-color: inherit;

@@ -19,6 +19,9 @@
                     <p class="task__text">{{task.content}}</p>
                 </div>
                 <div class="task__group">
+                    <a class="task__icon" href="{% url 'tasks:edit' pk=task.id%}?list_by={{tasks_list_by}}">
+                        <i class="fa-regular fa-edit"></i>
+                    </a>
                     <a class="task__icon" href="{% url 'tasks:delete' pk=task.id%}?list_by={{tasks_list_by}}">
                         <i class="fa-regular fa-trash-can"></i>
                     </a>

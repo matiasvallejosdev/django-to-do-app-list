@@ -12,6 +12,20 @@ class TaskListForm(forms.ModelForm):
         }
 
 
+class TaskForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = ['content', 'task_list']
+        widgets = {
+            'content': forms.TextInput(attrs={'placeholder': 'Your task'}),
+            'task_list': forms.Select()
+        }
+
+    def form_valid(self, form):
+        form.instance.user = self.user
+        return super().form_valid(form)
+
+
 class TaskFormSimple(forms.ModelForm):
     class Meta:
         model = Task

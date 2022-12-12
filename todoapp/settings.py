@@ -20,12 +20,6 @@ import dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Load enviroment .env
-# dotenv = Dotenv(os.path.join(os.path.dirname(__file__), ".env")) # Of course, replace by your correct path
-# os.environ.update(dotenv)
-# load_dotenv(os.path.join(BASE_DIR, ".env"))
-
-# output of the following command should be: `['__author__', '__builtins__', '__cached__', ...`
-print("Dotenv should be shown here: ", dir(dotenv))
 dotenv_path = os.path.join(BASE_DIR, '.env')
 dotenv.load_dotenv(dotenv_path)
 
@@ -90,17 +84,6 @@ WSGI_APPLICATION = 'todoapp.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'djangotodoapp',
-#         'USER': 'todoapp',
-#         'PASSWORD': '1986',
-#         'HOST': 'localhost',
-#         'PORT': '3306',
-#     }
-# }
 
 
 DATABASES = {

@@ -16,7 +16,9 @@ from django.views.generic import TemplateView, ListView, CreateView, RedirectVie
 from django.views.generic.edit import FormView, FormMixin
 
 from .models import List, Task
-from .forms import TaskListForm, TaskFormSimple, TaskFormComplete
+from .forms import TaskListForm, TaskFormSimple, TaskFormComplete, TaskForm
+
+from django.utils import timezone
 
 class HttpResponseUnauthorized(HttpResponse):
     def __init__(self):
@@ -40,6 +42,7 @@ class MainMixinView(TaskUserMixin, View): # TaskCreateMixin, AddListMixin,
         context = super(MainMixinView, self).get_context_data(*args, **kwargs)
         add_task = True if self.request.GET.get('add_task') != None else False
         context['add_task'] = add_task
+        context['user'] = self.request.user
         return context
 
 class TaskDeleteRedirect(RedirectView):
@@ -77,6 +80,7 @@ class TaskCompleteRedirect(RedirectView):
             if request.GET.get('check', None) is not None:
                 is_complete = True if request.GET.get('check') == 'True' else False
                 task.is_complete = is_complete
+                task.completed_at = timezone.now()
             if task.user == self.request.user:
                 task.save()
             else:
@@ -110,11 +114,20 @@ class TasksView(FormMixin, MainMixinView, TemplateView):
     model = Task
     context_object_name = 'tasks'
     tasks_list = None
-    form_class = TaskFormSimple
+    form_class = TaskForm
 
     def get(self, request, *args, **kwargs):
         self.tasks_list = self.get_queryset(*args, **kwargs)
         return super(TasksView, self).get(request, *args, **kwargs)
+
+    def get_form(self, form_class=None):
+        form = super(TasksView, self).get_form(form_class)
+        list_by = self.request.GET.get('list_by') or ''
+        form.fields['task_list'].queryset = List.objects.filter(user=self.request.user)
+        if list_by is not '':
+            form.fields['task_list'].queryset = List.objects.filter(user=self.request.user).filter(name__icontains=list_by)
+        form.fields['task_list'].empty_label = None
+        return form
 
     def filter_search(self, tasks):
         search_area = self.request.GET.get('search') or ''
@@ -136,16 +149,6 @@ class TasksView(FormMixin, MainMixinView, TemplateView):
         if form.is_valid():
             task = form.save(commit=False)
             task.user = user
-            list = self.request.GET.get('list_by') or 'Inbox'
-            list_object = List.objects.filter(name__icontains=list)
-            if list_object:
-                task.task_list = list_object.first()
-            else:
-                if not List.objects.filter(name__icontains='Uncategorized'):
-                    new_list = List.objects.create(name='Uncategorized', user=user)
-                else:
-                    new_list = List.objects.get(name='Uncategorized', user=user)
-                task.task_list = new_list
             task.save()
             return self.get_success_url()
         return render(request, self.template_name, {'form': form})
@@ -164,7 +167,7 @@ class TasksView(FormMixin, MainMixinView, TemplateView):
         context = super(TasksView, self).get_context_data(**kwargs)
         title = self.request.GET.get('list_by') or 'Inbox'
         context['title'] = title
-        context['tasks_complete'] = self.tasks_list.filter(is_complete=True)
+        context['tasks_complete'] = self.tasks_list.filter(is_complete=True).order_by('-completed_at')
         context['tasks_todo'] = self.tasks_list.filter(is_complete=False).order_by('-created_at')
         context['tasks_complete_count'] = context['tasks_complete'].count()
         context['tasks_list_by'] = self.request.GET.get('list_by') or ''
@@ -188,3 +191,23 @@ class TaskListForm(FormMixin, MainMixinView, TemplateView):
             list.save()
             return self.get_success_url()
         return render(request, self.template_name, {'form_list': form})
+
+    def get_context_data(self, **kwargs):
+        context = super(TaskListForm, self).get_context_data(**kwargs)
+        context['lists_count'] = List.objects.filter(user=self.request.user).count()
+        return context
+
+class TaskEditForm(MainMixinView, UpdateView):
+    model = Task
+    fields = ['content', 'task_list']
+    template_name = 'task_edit.html'
+    success_url = reverse_lazy('tasks:home')
+    query_string = True
+    listed_by = None
+
+    def get_form(self, form_class=None):
+        form = super(TaskEditForm, self).get_form(form_class)
+        form.fields['task_list'].queryset = List.objects.filter(user=self.request.user)
+        form.fields['task_list'].empty_label = None
+        self.listed_by = self.request.GET.get('list_by', None)
+        return form

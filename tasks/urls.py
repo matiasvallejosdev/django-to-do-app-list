@@ -10,6 +10,7 @@ urlpatterns = [
     path('task/view/', TasksView.as_view(), name='home'),
     path('list/create/', TaskListForm.as_view(), name='list_create'),
     # Task Operations
+    path('task/edit/<int:pk>/', TaskEditForm.as_view(), name='edit'),
     path('task/delete/<int:pk>/', TaskDeleteRedirect.as_view(), name='delete'),
     path('task/complete/<int:pk>/', TaskCompleteRedirect.as_view(), name='complete'),
     # List Operations
